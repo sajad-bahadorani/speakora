@@ -1,12 +1,32 @@
 from django.contrib import admin
-<<<<<<< HEAD
+
 from django.contrib.auth.admin import UserAdmin
 
 from .models import User
 
+@admin.register(User)
+class CustomUserAdmin(UserAdmin):
 
-admin.site.register(User, UserAdmin)
-=======
+    list_display = (
+        'username',
+        'email',
+        'first_name',
+        'last_name',
+        'role',
+        'is_active',
+    )
 
-# Register your models here.
->>>>>>> 6324d3a (Add custom user model foundation)
+    list_filter = ('role', 'is_active', 'is_staff')
+
+    search_fields = ('username', 'email', 'first_name', 'last_name')
+
+    fieldsets = UserAdmin.fieldsets + (
+        ('Additional Information', {
+            'fields': ('role', 'phone_number', 'profile_picture')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'Updated_at')
+        }),
+    )
+
+    readonly_fields = ('created_at', 'updated_at')
